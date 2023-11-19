@@ -1,11 +1,11 @@
 import VerifiedCrdt.Crdt
 
-inductive LwwRegisterOp where
+inductive LwwRegisterOp (α : Type) where
   | Read
-  | Write
+  | Write (value : α)
 
 instance LwwRegisterOps (α : Type) : Operations α where
-  ops := LwwRegisterOp
+  ops := LwwRegisterOp α
   return_type op := match op with
     | LwwRegisterOp.Read => α
-    | LwwRegisterOp.Write => Unit
+    | LwwRegisterOp.Write _ => Unit

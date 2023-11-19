@@ -3,10 +3,11 @@ import VerifiedCrdt.Examples.LwwRegister.Operations
 import Mathlib.Init.ZeroOne
 import Init.Data.Ord
 
+/- A last-write-wins register resolves conflicts by setting the register to whoever made the change last. -/
 instance LwwRegister {ρ τ : Type} (α : Type) [Zero τ] [LT τ] [DecidableRel (@LT.lt τ _)] [Inhabited α] : Crdt ρ τ α where
   state_type := α × τ
   message_type := α × τ
-  init_state rid := (default, 0)
+  init_state _ := (default, 0)
 
   send state := (state, state)
   receive state message :=
@@ -14,6 +15,9 @@ instance LwwRegister {ρ τ : Type} (α : Type) [Zero τ] [LT τ] [DecidableRel 
       then message
       else state
   do_op op state timestamp :=
-    if timestamp > state.snd
-      then _
-      else _
+    match op with
+      | LwwRegisterOp.Read => (state, state.fst)
+      | LwwRegisterOp.Write value =>
+        if timestamp > state.snd
+          then ((value, timestamp), ())
+          else (state, ())

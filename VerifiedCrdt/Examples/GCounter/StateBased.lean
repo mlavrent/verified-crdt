@@ -1,18 +1,6 @@
 import VerifiedCrdt.Crdt
+import VerifiedCrdt.Examples.GCounter.Operations
 import Mathlib.Init.ZeroOne
-
-/- A grow-only counter supports two replica-local operations:
- - read the counter value
- - increment the counter value -/
-inductive GCounterOp where
-  | Read
-  | Increment
-
-instance GCounterOps (α : Type) : Operations α where
-  ops := GCounterOp
-  return_type op := match op with
-    | GCounterOp.Read => α
-    | GCounterOp.Increment => Unit
 
 /- A GCounter is a grow-only counter i.e. a counter that can only increase but not decrease. -/
 instance GCounter {ρ τ : Type} (α : Type) [Zero α] [Max α] : Crdt ρ τ α where

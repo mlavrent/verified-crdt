@@ -12,3 +12,6 @@ instance GCounterOps (α : Type) : Operations α where
   return_type op := match op with
     | GCounterOp.Read => α
     | GCounterOp.Increment => Unit
+
+class Incrementable (α : Type) where
+  increment : α → α

@@ -1,4 +1,5 @@
 import VerifiedCrdt.Crdt
+import VerifiedCrdt.Utils
 import VerifiedCrdt.Examples.GCounter.Operations
 import Mathlib.Init.ZeroOne
 
